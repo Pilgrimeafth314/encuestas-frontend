@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  frontend:
+    build:
+      context: .
+      target: dev
+      dockerfile: Dockerfile
+    container_name: encuesta-frontend
+    image: encuesta-frontend
+    ports:
+      - 80:5000
+    networks:
+      - nestjs-network
+
+networks:
+  nestjs-network:
+    driver: bridge
