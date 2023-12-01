@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@react-oauth/google": "0.11.1",
     "@types/jest": "27.5.2",
     "@types/node": "16.18.52",
