@@ -8,7 +8,7 @@ import { useCreateSurvey } from '../../useCreateSurvey';
 import { TextInput } from '../inputs/TextInput';
 import { DatePicker } from '../inputs/DatePicker';
 import { TextArea } from '../inputs/TextArea';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import apiUrl from '../../apiConfig';
 import { useAuth } from '../../useAuth';
 import NotFound from '../NotFound';
@@ -26,14 +26,6 @@ export function EditSurvey() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const navigation = useNavigate();
-
-  /*if (survey?.__v! > 0) {
-    navigation('/admin/encuestas', {
-      state: { name: 'No puedes editar una encuesta con respuestas.' },
-      replace: true,
-    });
-  }*/
 
   useEffect(() => {
     fetch(`${apiUrl}/surveys/${id}`, {
@@ -43,11 +35,11 @@ export function EditSurvey() {
         setSurvey(await response.json());
       })
       .catch(err => console.error(err));
-  }, [id]);
+  }, [id, userInfo.token]);
 
   const onSubmit = handleSubmit(() => {
-    setSurvey({ ...survey!, questions: Object.values(questions) });
-    handle({ ...survey!, questions: Object.values(questions) }!);
+    setSurvey({ ...survey!, questions: questions.map(container => container.question) });
+    handle({ ...survey!, questions: questions.map(container => container.question) }!);
   });
 
   function handleTitleChange(value: string): void {

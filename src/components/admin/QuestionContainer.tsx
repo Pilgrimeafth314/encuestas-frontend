@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Question, QuestionType } from '../../types.d';
 import { Checkbox } from '../inputs/Checkbox';
@@ -11,7 +11,6 @@ interface Props {
   index: number;
   question: Question;
   onRemove: () => void;
-  //onGetQuestion: (index: number, question: Question) => void;
 }
 
 export function QuestionContainer({
@@ -20,29 +19,25 @@ export function QuestionContainer({
   index,
   question,
   onRemove,
-}: //onGetQuestion,
-Props) {
+}: Props) {
   const [questionInfo, setQuestion] = useState<Question>(question);
-  const { addQuestion } = useQuestions();
+  const { updateQuestion } = useQuestions();
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = event.target.value;
     setQuestion({ ...questionInfo, title: newTitle });
-    addQuestion(index, { ...questionInfo, title: newTitle });
-    //onGetQuestion(index, { ...questionInfo, title: newTitle });
+    updateQuestion(index, { ...questionInfo, title: newTitle });
   };
 
   const handleRequired = (newIsChecked: boolean) => {
     setQuestion({ ...questionInfo, required: newIsChecked });
-    addQuestion(index, { ...questionInfo, required: newIsChecked });
-    //onGetQuestion(index, { ...questionInfo, required: newIsChecked });
+    updateQuestion(index, { ...questionInfo, required: newIsChecked });
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedType: QuestionType = Number(e.target.value) as QuestionType;
     setQuestion({ ...questionInfo, type: selectedType });
-    addQuestion(index, { ...questionInfo, type: selectedType });
-    //onGetQuestion(index, { ...questionInfo, type: selectedType });
+    updateQuestion(index, { ...questionInfo, type: selectedType });
   };
 
   const handleOptionAdd = () => {
@@ -50,48 +45,33 @@ Props) {
       ...questionInfo,
       options: [...questionInfo.options, { title: '' }],
     });
-    addQuestion(index, {
+    updateQuestion(index, {
       ...questionInfo,
       options: [...questionInfo.options, { title: '' }],
     });
-
-    /*onGetQuestion(index, {
-      ...questionInfo,
-      options: [...questionInfo.options, { title: '' }],
-    });*/
   };
 
   const handleOptionRemove = (indexOption: number) => {
-    const question = {
-      ...questionInfo,
-      options: questionInfo.options
-        .slice(0, indexOption)
-        .concat(questionInfo.options.slice(indexOption + 1)),
-    };
     setQuestion({
       ...questionInfo,
       options: questionInfo.options
         .slice(0, indexOption)
         .concat(questionInfo.options.slice(indexOption + 1)),
     });
-    addQuestion(index, {
+    updateQuestion(index, {
       ...questionInfo,
       options: questionInfo.options
         .slice(0, indexOption)
         .concat(questionInfo.options.slice(indexOption + 1)),
     });
-    //onGetQuestion(index, question);
-    //onGetQuestion(index, { ...questionInfo, options: options, removedOption: options[indexOption] });
   };
 
   const handleOptionTitleChange = (e: any, indexOption: number) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     const options = [...questionInfo.options];
     options[indexOption].title = value;
     setQuestion({ ...questionInfo, options: options });
-    addQuestion(index, { ...questionInfo, options: options });
-    ///onGetQuestion(index, { ...questionInfo, options: options });
-    //onGetQuestion(index, { ...questionInfo, options: [...questionInfo.options, ...options] });
+    updateQuestion(index, { ...questionInfo, options: options });
   };
 
   return (

@@ -15,14 +15,13 @@ interface Props {
 }
 
 export function DroppableContainer({ register, errors, questionsEdit }: Props) {
-  const { questions, addQuestion, setQuestions, /*deleteQuestion, updateQuestion*/} = useQuestions();
+  const { addQuestion, deleteQuestion } = useQuestions();
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [questionContainers, setQuestionContainers] = useState<QC[]>([]);
   const [nextId, setNextId] = useState<number>(0);
 
   useEffect(() => {
-    //const newQuestions: { [id: number]: Question } = {};
     let currentId = nextId;
     questionsEdit?.forEach((question, index) => {
       const newId = currentId;
@@ -36,31 +35,20 @@ export function DroppableContainer({ register, errors, questionsEdit }: Props) {
             index={newId}
             question={question}
             onRemove={() => handleRemove(newId)}
-            //onGetQuestion={handleGetQuestion}
             register={register}
             errors={errors}
           />
         ),
       };
 
-      //setQuestions({ ...questions, [newId]: question });
-      const newQuestions = questions[newId] = question;
-      setQuestions({...questions, [newId]: question});
-      setQuestionContainers((prevQuestionContainers) => {
-        return {
-          ...prevQuestionContainers,
-          [newId]: newQuestionContainer,
-        };
-      });
-      
-      //if (!questionContainers.some(container => container.id === newId)) {
-        //setQuestionContainers(prevContainers => [...prevContainers, newQuestionContainer]);
-      //}
-      //setQuestionContainers([...questionContainers, newQuestionContainer]);
+      addQuestion(newId, question);
+      setQuestionContainers(prevQuestions => [
+        ...prevQuestions,
+        newQuestionContainer,
+      ]);
     });
-    //setQuestions(newQuestions);
     setNextId(currentId);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
@@ -103,16 +91,14 @@ export function DroppableContainer({ register, errors, questionsEdit }: Props) {
             index={newId}
             question={questionInt}
             onRemove={() => handleRemove(newId)}
-            //onGetQuestion={handleGetQuestion}
             register={register}
             errors={errors}
           />
         ),
       };
 
-      //setQuestions({ ...questions, [newId]: questionInt });
-      //addQuestion(newId, questionInt);
-      setQuestionContainers((prevQuestionContainers) => {
+      addQuestion(newId, questionInt);
+      setQuestionContainers(prevQuestionContainers => {
         return {
           ...prevQuestionContainers,
           [newId]: newQuestionContainer,
@@ -121,28 +107,15 @@ export function DroppableContainer({ register, errors, questionsEdit }: Props) {
     }
   };
 
-  /*const handleGetQuestion = (index: number, question: Question) => {
-    //setQuestions({ ...questions, [index]: question });
-    addQuestion(index, question);
-    updateQuestion(index, question);
-  };*/
-
   const handleRemove = (index: number) => {
-    /*setQuestionContainers(prevContainers => {
-      const updatedContainers = prevContainers?.filter(
+    setQuestionContainers(prevContainers => {
+      prevContainers = Object.values(prevContainers);
+      const updatedContainers = prevContainers.filter(
         container => container.id !== index,
       );
-      console.log(updatedContainers)
-      return updatedContainers;
-    });*/
-    setQuestionContainers(prevContainers => {
-      const updatedContainers = prevContainers.slice();
-      updatedContainers.splice(index, 1);
       return updatedContainers;
     });
-
-    //setQuestions();
-    //setNextId(nextId - 1)
+    deleteQuestion(index);
   };
 
   const classNames = `border-dashed border-2 border-blue-300 p-4 rounded-lg 
@@ -156,7 +129,9 @@ export function DroppableContainer({ register, errors, questionsEdit }: Props) {
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      {Object.values(questionContainers).length === 0 ? 'Arrastra y suelta aquí' : ''}
+      {Object.values(questionContainers).length === 0
+        ? 'Arrastra y suelta aquí'
+        : ''}
       {Object.values(questionContainers).map((container, index) => (
         <div key={index}>{container.component}</div>
       ))}
