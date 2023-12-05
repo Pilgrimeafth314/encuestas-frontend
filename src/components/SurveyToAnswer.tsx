@@ -44,24 +44,29 @@ function SurveyToAnswer() {
   const onSubmit = handleSubmit(data => handle(data));
 
   return survey !== null ? (
-    <div className='overflow-x-hidden'>
+    <div className="overflow-x-hidden">
       <SquareColors />
-      <div className="container mx-auto">
-        <SurveyHeader survey={survey!} />
-        <form onSubmit={onSubmit}>
-          <RenderQuestion
-            register={register}
-            errors={errors}
-            questions={survey?.questions!}
-          />
-          <button>Enviar</button>
-        </form>
-        {isLoading && <LoadingOverlay loading={isLoading} />}
-        {error && <p>{error.message}</p>}
+      <div className="flex items-center justify-center p-12">
+        <div className="mx-auto max-w-3xl w-full bg-blue-500/50 rounded-md p-10 mb-10 mt-10">
+          <SurveyHeader survey={survey!} />
+          <form onSubmit={onSubmit}>
+            <RenderQuestion
+              register={register}
+              errors={errors}
+              questions={survey?.questions!}
+            />
+            <button className="w-full py-4 px-6 rounded text-16 font-500 bg-blue-500 text-white cursor-pointer mt-6 hover:shadow-md">
+              Enviar
+            </button>
+          </form>
+          {isLoading && <LoadingOverlay loading={isLoading} />}
+          {error && <p>{error.message}</p>}
+        </div>
+        {error?.message && (
+          <Navigate to={`/encuesta/${slug}/success`} state={{ location }} />
+        )}
       </div>
-      {error?.message && (<Navigate to={`/${slug}/success`} state={{ location }}/>)}
     </div>
-    
   ) : (
     <NotFound message={response?.message!} />
   );

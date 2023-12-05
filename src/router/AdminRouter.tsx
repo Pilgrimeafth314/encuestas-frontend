@@ -9,7 +9,6 @@ import { QuestionsProvider } from '../useQuestion';
 import { EditSurvey } from '../components/admin/EditSurvey';
 import { TabSurveyInfo } from '../components/admin/TabSurveyInfo';
 import SquareColors from '../components/admin/SquareColors';
-import { OnSuccess } from '../components/OnSuccess';
 export const AdminRouter = () => {
   const { userInfo } = useAuth();
 

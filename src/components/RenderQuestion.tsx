@@ -11,7 +11,7 @@ interface Props {
 
 export function RenderQuestion({ register, errors, questions }: Props) {
   return (
-    <div className="flex flex-col">
+    <>
       {questions?.map(question => {
         switch (question.type) {
           case QuestionType.Checkbox:
@@ -42,9 +42,13 @@ export function RenderQuestion({ register, errors, questions }: Props) {
               />
             );
           default:
-            return <div>Not found</div>;
+            return (
+              <div className="mb-6 bg-white p-5 rounded-md shadow-md">
+                No se encontró el tipo de pregunta
+              </div>
+            );
         }
       })}
-    </div>
+    </>
   );
 }

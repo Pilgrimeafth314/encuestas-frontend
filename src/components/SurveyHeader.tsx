@@ -33,25 +33,25 @@ export function SurveyHeader({ survey }: Props) {
   } catch (_) {}
 
   return (
-    <div className="grid grid-rows-3 grid-flow-col gap-auto p-6 max-w-6xl mx-auto items-center space-x-4">
-      <div className="row-span-3 bg-white rounded-xl shadow-md p-6">
-        <div className="min-w-sm max-w-lg mx-auto py-10">
-          <img
-            className="w-16 h-16 rounded-full mx-auto"
-            src={user?.picture}
-            alt={user?.name}
-          />
-          <h4 className="text-center text-black font-medium">{user?.name}</h4>
-          <p className="text-slate-500 text-center">{user?.email}</p>
+    <div className="shadow-lg p-5 rounded-md mb-10 bg-white">
+      <div className="mb-4">
+        <h1 className="text-xl">{survey?.title}</h1>
+        <p className="text-md text-gray-400">{survey?.description}</p>
+      </div>
+      <hr />
+      <small className="text-xs">Ingresaste como:</small>
+      <div className="flex items-center gap-4 mt-4">
+        <img
+          className="w-10 h-10 rounded-full shadow-lg"
+          src={user?.picture}
+          alt={user?.name}
+        />
+        <div className="font-medium dark:text-white">
+          <div>{user?.name}</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            {user?.email}
+          </div>
         </div>
-      </div>
-      <div className="col-span-2 bg-white rounded-xl shadow-md py-6">
-        <h2 className="text-xl font-medium text-black text-center">
-          {survey?.title}
-        </h2>
-      </div>
-      <div className="row-span-2 col-span-2 bg-white rounded-xl shadow-md py-6 ">
-        <p className="text-slate-500 text-center">{survey?.description}</p>
       </div>
     </div>
   );

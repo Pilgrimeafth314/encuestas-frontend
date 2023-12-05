@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { hasRole } from './role';
-import { Navigate, useLocation } from 'react-router-dom';
+import NotFound from '../components/NotFound';
 
 type Props = {
   children: ReactNode;
@@ -9,10 +9,9 @@ type Props = {
 };
 
 export const HasRole = ({ children, arrRole, rol }: Props) => {
-  const location = useLocation();
   return hasRole(arrRole, rol) ? (
     <>{children}</>
   ) : (
-    <Navigate to="/" state={{ location }} />
+    <NotFound message={'No tienes permiso para acceder al panel de administración'}/>
   );
 };
