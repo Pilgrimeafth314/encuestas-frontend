@@ -65,7 +65,7 @@ export function SurveyList({ surveys, onDeleteClick }: SurveyListProps) {
             currentSurveys.map(survey => (
               <tr key={survey.title}>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <Link to={`/${survey.slug}`} className="text-blue-500">
+                  <Link to={`/encuesta/${survey.slug}`} className="text-blue-500">
                     {survey.title}
                   </Link>
                 </td>
