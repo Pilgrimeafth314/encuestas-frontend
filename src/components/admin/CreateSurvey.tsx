@@ -31,8 +31,8 @@ export function CreateSurvey() {
   } = useForm();
 
   const onSubmit = handleSubmit(() => {
-    setSurvey({ ...survey, questions: Object.values(questions) });
-    handle({ ...survey, questions: Object.values(questions) });
+    setSurvey({ ...survey, questions: questions.map(container => container.question) });
+    handle({ ...survey, questions: questions.map(container => container.question) });
   });
 
   function handleTitleChange(value: string): void {

@@ -2,12 +2,15 @@ import { createContext, useContext, useState } from 'react';
 import { Question } from './types';
 
 interface QuestionsContextType {
-  questions: { [id: number]: Question };
-  //questions: UseQuestionType[];
-  setQuestions: (questions: { [id: number]: Question }) => void;
+  questions: QuestionsContainer[];
   addQuestion: (index: number, question: Question) => void;
   deleteQuestion: (index: number) => void;
-  //updateQuestion: (index: number, question: Question) => void;
+  updateQuestion: (index: number, question: Question) => void;
+}
+
+interface QuestionsContainer {
+  id: number;
+  question: Question;
 }
 
 const QuestionsContext = createContext<QuestionsContextType | undefined>(
@@ -15,36 +18,36 @@ const QuestionsContext = createContext<QuestionsContextType | undefined>(
 );
 
 export function QuestionsProvider({ children }: any) {
-  const [questions, setQuestion] = useState<{ [id: number]: Question }>({});
-  //const [questions, setQuestion] = useState<UseQuestionType[]>([]);
-
-
-
-  const setQuestions = (questions: { [id: number]: Question }) => {
-    setQuestion(questions);
-  };
-
+  const [questions, setQuestion] = useState<QuestionsContainer[]>([]);
   const addQuestion = (index: number, question: Question) => {
-    setQuestion({ ...questions, [index]: question });
+    const newQuestion = {
+      id: index,
+      question: question,
+    };
+    setQuestion(prevQuestions => [...prevQuestions, newQuestion]);
   };
 
   const deleteQuestion = (index: number) => {
-    /*setQuestion(prevquestions => {
-        const updatedQuestions = { ...prevquestions };
-        delete updatedQuestions[index];
-        return updatedQuestions;
-      });*/
-    delete questions[index];
-    setQuestion(questions);
+    setQuestion(prevQuestions =>
+      prevQuestions.filter(question => question.id !== index),
+    );
   };
 
   const updateQuestion = (index: number, question: Question) => {
-    //setQuestion({ ...questions, [index]: question });
+    const updatedQuestion = {
+      id: index,
+      question: question,
+    };
+    setQuestion(prevQuestions =>
+      prevQuestions.map(question =>
+        question.id === index ? updatedQuestion : question,
+      ),
+    );
   };
 
   return (
     <QuestionsContext.Provider
-      value={{ questions, addQuestion, setQuestions, deleteQuestion }}
+      value={{ questions, addQuestion, deleteQuestion, updateQuestion }}
     >
       {children}
     </QuestionsContext.Provider>
@@ -55,7 +58,7 @@ export function useQuestions() {
   const context = useContext(QuestionsContext);
   if (context === undefined)
     throw new Error(
-      'useQuestions debe ser utilizado dentro de un AuthProvider',
+      'useQuestions debe ser utilizado dentro de un QuestionsContext',
     );
 
   return context;
