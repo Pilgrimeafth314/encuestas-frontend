@@ -28,7 +28,7 @@ export function AppRouter() {
       <AuthProvider>
         <Routes>
           <Route path="/login" Component={GoogleSignIn} />
-          <Route path="/" element={<Navigate to={'/admin'}/>}>
+          <Route path="/">
             <Route
               path=":slug"
               element={
