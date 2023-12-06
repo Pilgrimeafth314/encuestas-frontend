@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Dashboard } from '../components/admin/Dashboard';
 import { useAuth } from '../useAuth';
 import { HasRole } from '../roles/HasRoles';
-import { ADMIN, STUDENT } from '../roles/roles';
+import { ADMIN } from '../roles/roles';
 import { MainSurvey } from '../components/admin/MainSurvey';
 import { CreateSurvey } from '../components/admin/CreateSurvey';
 import { QuestionsProvider } from '../useQuestion';
@@ -13,7 +13,7 @@ export const AdminRouter = () => {
   const { userInfo } = useAuth();
 
   return (
-    <HasRole arrRole={userInfo.roles} rol={STUDENT}>
+    <HasRole arrRole={userInfo.roles} rol={ADMIN}>
       <main className="w-full bg-slate-100 dark:bg-slate-800 min-h-screen transition-all main">
         <div className="bg-white flex items-center shadow-md shadow-black/5 sticky top-0 left-0 z-30 overflow-x-hidden">
           <SquareColors />
